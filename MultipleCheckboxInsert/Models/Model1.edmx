@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="bytecodeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblAnswers">
+          <Key>
+            <PropertyRef Name="tblAnswersID" />
+          </Key>
+          <Property Name="tblAnswersID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Answer" Type="varchar" MaxLength="50" />
+          <Property Name="tblQuestionID" Type="int" />
+        </EntityType>
+        <EntityType Name="tblQuestion">
+          <Key>
+            <PropertyRef Name="tblQuestionID" />
+          </Key>
+          <Property Name="tblQuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Question" Type="varchar" MaxLength="50" />
+          <Property Name="CorrectAnswerId" Type="int" />
+        </EntityType>
+        <EntityType Name="tblResult">
+          <Key>
+            <PropertyRef Name="tblResultID" />
+          </Key>
+          <Property Name="tblResultID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tblQuestionID" Type="int" />
+          <Property Name="SelectedAnswer" Type="int" />
+        </EntityType>
+        <Association Name="ty">
+          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="0..1" />
+          <End Role="tblAnswers" Type="Self.tblAnswers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="tblQuestionID" />
+            </Principal>
+            <Dependent Role="tblAnswers">
+              <PropertyRef Name="tblQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AllQuestionAndAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DeleteQuestionAndAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tblQuestionID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllQuestionAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="JoinQuestionAnswerResultCheckbox" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="bytecodeModelStoreContainer">
+          <EntitySet Name="tblAnswers" EntityType="Self.tblAnswers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuestion" EntityType="Self.tblQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblResult" EntityType="Self.tblResult" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="ty" Association="Self.ty">
+            <End Role="tblQuestion" EntitySet="tblQuestion" />
+            <End Role="tblAnswers" EntitySet="tblAnswers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bytecodeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblAnswer">
+          <Key>
+            <PropertyRef Name="tblAnswersID" />
+          </Key>
+          <Property Name="tblAnswersID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tblQuestionID" Type="Int32" />
+          <NavigationProperty Name="tblQuestion" Relationship="Self.ty" FromRole="tblAnswers" ToRole="tblQuestion" />
+        </EntityType>
+        <EntityType Name="tblQuestion">
+          <Key>
+            <PropertyRef Name="tblQuestionID" />
+          </Key>
+          <Property Name="tblQuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Question" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CorrectAnswerId" Type="Int32" />
+          <NavigationProperty Name="tblAnswers" Relationship="Self.ty" FromRole="tblQuestion" ToRole="tblAnswers" />
+        </EntityType>
+        <EntityType Name="tblResult">
+          <Key>
+            <PropertyRef Name="tblResultID" />
+          </Key>
+          <Property Name="tblResultID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tblQuestionID" Type="Int32" />
+          <Property Name="SelectedAnswer" Type="Int32" />
+        </EntityType>
+        <Association Name="ty">
+          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="0..1" />
+          <End Role="tblAnswers" Type="Self.tblAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="tblQuestionID" />
+            </Principal>
+            <Dependent Role="tblAnswers">
+              <PropertyRef Name="tblQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DatabaseContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblAnswers" EntityType="Self.tblAnswer" />
+          <EntitySet Name="tblQuestions" EntityType="Self.tblQuestion" />
+          <EntitySet Name="tblResults" EntityType="Self.tblResult" />
+          <AssociationSet Name="ty" Association="Self.ty">
+            <End Role="tblQuestion" EntitySet="tblQuestions" />
+            <End Role="tblAnswers" EntitySet="tblAnswers" />
+          </AssociationSet>
+          <FunctionImport Name="AllQuestionAndAnswer" ReturnType="Collection(bytecodeModel.AllQuestionAndAnswer_Result)" />
+          <FunctionImport Name="DeleteQuestionAndAnswer">
+          <Parameter Name="tblQuestionID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllQuestionAnswer" ReturnType="Collection(bytecodeModel.GetAllQuestionAnswer_Result)" />
+          <FunctionImport Name="JoinQuestionAnswerResultCheckbox" ReturnType="Collection(bytecodeModel.JoinQuestionAnswerResultCheckbox_Result)" />
+        </EntityContainer>
+        <ComplexType Name="AllQuestionAndAnswer_Result">
+          <Property Type="Int32" Name="tblResultID" Nullable="false" />
+          <Property Type="Int32" Name="tblQuestionID" Nullable="true" />
+          <Property Type="Int32" Name="SelectedAnswer" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetAllQuestionAnswer_Result">
+          <Property Type="Int32" Name="tblResultID" Nullable="false" />
+          <Property Type="Int32" Name="tblQuestionID" Nullable="true" />
+          <Property Type="Int32" Name="SelectedAnswer" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="JoinQuestionAnswerResultCheckbox_Result">
+          <Property Type="Int32" Name="tblQuestionID" Nullable="true" />
+          <Property Type="String" Name="Question" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Answer" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="bytecodeModelStoreContainer" CdmEntityContainer="DatabaseContext">
+          <EntitySetMapping Name="tblAnswers">
+            <EntityTypeMapping TypeName="bytecodeModel.tblAnswer">
+              <MappingFragment StoreEntitySet="tblAnswers">
+                <ScalarProperty Name="tblAnswersID" ColumnName="tblAnswersID" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuestions">
+            <EntityTypeMapping TypeName="bytecodeModel.tblQuestion">
+              <MappingFragment StoreEntitySet="tblQuestion">
+                <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="CorrectAnswerId" ColumnName="CorrectAnswerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblResults">
+            <EntityTypeMapping TypeName="bytecodeModel.tblResult">
+              <MappingFragment StoreEntitySet="tblResult">
+                <ScalarProperty Name="tblResultID" ColumnName="tblResultID" />
+                <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+                <ScalarProperty Name="SelectedAnswer" ColumnName="SelectedAnswer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AllQuestionAndAnswer" FunctionName="bytecodeModel.Store.AllQuestionAndAnswer">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="bytecodeModel.AllQuestionAndAnswer_Result">
+                <ScalarProperty Name="tblResultID" ColumnName="tblResultID" />
+                <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+                <ScalarProperty Name="SelectedAnswer" ColumnName="SelectedAnswer" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteQuestionAndAnswer" FunctionName="bytecodeModel.Store.DeleteQuestionAndAnswer" />
+          <FunctionImportMapping FunctionImportName="GetAllQuestionAnswer" FunctionName="bytecodeModel.Store.GetAllQuestionAnswer">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="bytecodeModel.GetAllQuestionAnswer_Result">
+                <ScalarProperty Name="tblResultID" ColumnName="tblResultID" />
+                <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+                <ScalarProperty Name="SelectedAnswer" ColumnName="SelectedAnswer" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="JoinQuestionAnswerResultCheckbox" FunctionName="bytecodeModel.Store.JoinQuestionAnswerResultCheckbox">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="bytecodeModel.JoinQuestionAnswerResultCheckbox_Result">
+                <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,149 @@
+﻿@model MultipleCheckboxInsert.Models.QuestionAndAnswers
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+
+    @foreach (var item in Model.listquestion)
+    {
+        <label id="@item.tblQuestionID" value="@item.tblQuestionID" class="Question" name="@item.Question"></label><br />
+        @item.Question
+        <br />
+        foreach (var ans in Model.listanswer)
+        {
+            if (ans.tblQuestionID == item.tblQuestionID)
+            {
+                <input type="checkbox" id="@ans.tblAnswersID" name="@ans.tblQuestionID" class="answer" value="@ans.tblAnswersID" />
+                @ans.Answer <br />
+            }
+        }
+    }
+
+</div>
+
+<br />
+
+<div>
+    <input type="submit" id="btnsubmit" name="submit" class="btn btn-primary btn-lg" value="SUBMIT" />
+</div>
+
+<div class="AnswersAll"></div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+
+
+    $(document).ready(function ()
+    {
+        getdata();
+    });
+
+
+    function getdata() {
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: "/Home/GetAll",
+            data: '',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                $.each(data, function (i, data) {
+                    debugger;
+                    var selectedRadiobutton = data.question;
+                   // $(selectedRadiobutton).attr("checked", true);
+                    $("#" + data.SelectedAnswer).attr("checked", true);
+                })
+            },
+        });
+    }
+
+
+
+    $(document).ready(function () {
+        $("#btnsubmit").click(function () {
+            debugger;
+            var arr = new Array;
+            var selectedAnswers = '';
+            $('.Question').each(function () {
+                debugger;
+                selectedAnswers = '';
+                var question = $(this).attr('id');
+                $('input:checkbox[name="' + question + '"]:checked').each(function ()
+                {
+                    selectedAnswers = selectedAnswers + ',' + $(this).val();
+                });
+
+                var data = {
+                    tblQuestionID: $(this).attr('id'),
+                    Answers: selectedAnswers.substring(1, selectedAnswers.length)
+                };
+                debugger;
+                arr.push(data);
+
+            });
+
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: "/Home/Insert",
+                dataType: "json",
+                data: JSON.stringify({ obj: arr }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data)
+                {
+                    //ShowResultAll();
+                    window.location.href = '@Url.Action("Dashboard", "Home")';
+                }
+
+
+            });
+
+        });
+    });
+
+
+    function ShowResultAll() {
+        debugger;
+        var text = "";
+        $.ajax({
+            type: "GET",
+            url: "/Home/AllQuestionAndAnswer",
+            dataType: "json",
+            data: '',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                debugger;
+                $(".AnswersAll").empty();
+                $.each(data, function (i, data) {
+                    debugger;
+                    $(".AnswersAll").append("<p> Question" + data.tblQuestionID + ":" + data.Question + "</p>");
+                    $(".AnswersAll").append("<p> Answer:" + data.Answer + "</p>");
+
+                    //debugger;
+                    //var result = $('input:checkbox[name="' + Answers + '"]:checked');
+                    //if (result.length > 0)
+                    //{
+                    //    var Ans = result.length;
+                    //    result.each(function () {
+                    //        Ans += $(this).val() + " ,";
+                    //    })
+                    //    $('#AnswersAll').html(Ans);
+                    //}
+
+
+                });
+            }
+
+        });
+    }
+
+
+</script>

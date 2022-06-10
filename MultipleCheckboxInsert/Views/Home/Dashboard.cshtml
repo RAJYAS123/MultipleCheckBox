@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+
+<div id="AllQuestionAndAnswer" class="QuestionAndAnswer">
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+
+    $.ajax({
+        type: "GET",
+        url: "/Home/AllQuestionAndAnswer",
+        dataType: "json",
+        data: '',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $("#AllQuestionAndAnswer").empty();
+            debugger;
+            var selectAnswers = '';
+            var prevQuestionID = 0;
+            var currentQuesName = '';
+            var currentQuesID = 0;
+            for (i = 0; i <= data.length - 1; i++)
+            {
+                if (prevQuestionID == 0) {
+                    prevQuestionID = data[i].tblQuestionID;
+                }
+                debugger;
+                if ((i == data.length - 1)) {
+                    currentQuesName = data[i].Question;
+                    currentQuesID = data[i].tblQuestionID;
+                    selectAnswers = selectAnswers + ',' + data[i].Answer;
+                }
+                debugger;
+                if ((i == data.length - 1) || data[i].tblQuestionID != prevQuestionID) {
+                    $("#AllQuestionAndAnswer").append("<p> Question" + currentQuesID + ":" + currentQuesName + "</p>");
+                    $("#AllQuestionAndAnswer").append("<p> Answers:" + selectAnswers + "</p>");
+                    prevQuestionID = data[i].tblQuestionID;
+                    selectAnswers = '';
+                }
+                debugger;
+                currentQuesName = data[i].Question;
+                currentQuesID = data[i].tblQuestionID;
+                selectAnswers = selectAnswers + ',' + data[i].Answer;
+            }
+        }
+
+    });
+
+</script>
+

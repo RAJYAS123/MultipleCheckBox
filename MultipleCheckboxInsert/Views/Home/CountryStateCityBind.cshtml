@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "CountryStateCityBind";
+}
+
+<h2>CountryStateCityBind</h2>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+    <form class="worldForm">
+        <div class="lists">
+            <label>Select Country:</label>
+            <select name="countrybind"  id="country">
+                <option value="" selected="selected">Select Country</option>
+            </select>
+        </div>
+        <br />
+        <br />
+        <div class="lists">
+            <label>Select State:</label>
+            <select name="statebind" id="state">
+                <option value="" selected="selected">Select State</option>
+            </select>
+        </div>
+
+        <br />
+        <br />
+        <div class="lists">
+            <label>Select City:</label>
+            <select name="citybind" id="city">
+                <option value="" selected="selected">Select City</option>
+            </select>
+        </div>
+    </form>
+</body>
+</html>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+
+    var CountryList = [{
+        CountryID: 1,
+        CountryName: 'India'
+    },
+    {
+        CountryID: 2,
+        CountryName: 'Pakistan'
+    },
+    {
+        CountryID: 3,
+        CountryName: 'Usa'
+   
+    }];
+
+    var StateList = [{
+        StateId: 1,
+        StateName: 'UP',
+        CountryID: 1
+    },
+     {
+            StateId: 2,
+            StateName: 'Punjab',
+            CountryID: 1
+      },
+
+     {
+         StateId: 3,
+        StateName: 'Lohore',
+         CountryID: 2
+
+    }];
+
+    var CityList = [{
+        CityId: 1,
+        CityName: 'Noida',
+        StateId: 1
+    },
+        {
+            CityId: 2,
+            CityName: 'Gorakhpur',
+            StateId: 1
+        },
+        {
+            CityId: 3,
+            CityName: 'Mohali',
+            StateId: 2
+        },
+        {
+            CityId: 4,
+            CityName: 'patiala',
+            StateId: 2
+        },
+        {
+
+            CityId: 5,
+            CityName: 'Islamabad',
+            StateId: 3
+        },
+        {
+
+            CityId: 6,
+            CityName: 'Lakhimpur',
+            StateId: 3
+
+    }];
+
+
+
+
+    $(document).ready(function () {
+        debugger;
+        $.each(CountryList, function (index, row) {
+            $('#country').append("<option value ='" + row.CountryID + "'>" + row.CountryName + "</option>");
+        });
+    });
+
+    $('#country').change(function () {
+        debugger;
+        //var id =  $(this).val();
+        //$("#state").empty();
+        debugger;
+        for (var i = 0; i < StateList.length; i++) {
+            debugger;
+            if (CountryList[i].CountryID == $("#country").val()) {
+                $('#state').html('<option value="0">-Select State-</option>');
+                debugger;
+                $.each(countrylist, function (index, value) {
+                    $("#state").append('<option value="'+ value.StateId + '">' + value.StateName + '</option>');
+                });
+            }
+        }
+
+        //$.get({ country_id: id }, function (data) {
+        //    //var v = "<option>---Select State---</option>";
+        //    $.each(data, function (i, row) {
+        //        $("#state").append('<option value="' + row.StateId + '">' + row.StateName + '</option>');
+        //    });
+        //    $("#state").html();
+        //});
+    });
+
+    $('#state').change(function () {
+        debugger;
+        ($(this).val());
+        debugger;
+        for (var i = 0; i < CityList.length; i++) {
+            debugger;
+            if (CityList[i].CityId == $(this).val()) {
+                $('#city').html('<option value="0">-Select State-</option>');
+                debugger;
+                $.each(CityList, function (index, value) {
+                    $("#city").append('<option value="' + value.CityId + '">' + value.CityName + '</option>');
+                });
+            }
+        }
+    });
+</script>
+
+
+
+

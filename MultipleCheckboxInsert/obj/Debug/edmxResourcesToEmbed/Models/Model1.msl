@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="bytecodeModelStoreContainer" CdmEntityContainer="DatabaseContext">
+    <EntitySetMapping Name="tblAnswers">
+      <EntityTypeMapping TypeName="bytecodeModel.tblAnswer">
+        <MappingFragment StoreEntitySet="tblAnswers">
+          <ScalarProperty Name="tblAnswersID" ColumnName="tblAnswersID" />
+          <ScalarProperty Name="Answer" ColumnName="Answer" />
+          <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblQuestions">
+      <EntityTypeMapping TypeName="bytecodeModel.tblQuestion">
+        <MappingFragment StoreEntitySet="tblQuestion">
+          <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="CorrectAnswerId" ColumnName="CorrectAnswerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblResults">
+      <EntityTypeMapping TypeName="bytecodeModel.tblResult">
+        <MappingFragment StoreEntitySet="tblResult">
+          <ScalarProperty Name="tblResultID" ColumnName="tblResultID" />
+          <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+          <ScalarProperty Name="SelectedAnswer" ColumnName="SelectedAnswer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AllQuestionAndAnswer" FunctionName="bytecodeModel.Store.AllQuestionAndAnswer">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="bytecodeModel.AllQuestionAndAnswer_Result">
+          <ScalarProperty Name="tblResultID" ColumnName="tblResultID" />
+          <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+          <ScalarProperty Name="SelectedAnswer" ColumnName="SelectedAnswer" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="DeleteQuestionAndAnswer" FunctionName="bytecodeModel.Store.DeleteQuestionAndAnswer" />
+    <FunctionImportMapping FunctionImportName="GetAllQuestionAnswer" FunctionName="bytecodeModel.Store.GetAllQuestionAnswer">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="bytecodeModel.GetAllQuestionAnswer_Result">
+          <ScalarProperty Name="tblResultID" ColumnName="tblResultID" />
+          <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+          <ScalarProperty Name="SelectedAnswer" ColumnName="SelectedAnswer" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="JoinQuestionAnswerResultCheckbox" FunctionName="bytecodeModel.Store.JoinQuestionAnswerResultCheckbox">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="bytecodeModel.JoinQuestionAnswerResultCheckbox_Result">
+          <ScalarProperty Name="tblQuestionID" ColumnName="tblQuestionID" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="Answer" ColumnName="Answer" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>
